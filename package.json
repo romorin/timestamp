@@ -1,0 +1,13 @@
+{
+  "name": "@romorin/romorin-timestamp",
+  "version": "1.0.0",
+  "description": "Timestamp microserver freecodecamp challenge",
+  "main": "timestamp.service.js",
+  "scripts": {
+  },
+  "author": "romorin",
+  "license": "MIT",
+  "dependencies": {
+		"moment" : "~2.15.1"
+  }
+}
