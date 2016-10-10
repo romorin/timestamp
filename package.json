@@ -9,5 +9,6 @@
   "license": "MIT",
   "dependencies": {
 		"moment" : "~2.15.1"
-  }
+  },
+	"private": true
 }

@@ -1,11 +1,13 @@
 const _TIMESTAMP_FORMAT = "X";
 const _NATURAL_FORMAT = "MMMM DD YYYY";
+const _ERROR_MSG = "Error while processing the time input.";
 
-const _ERROR_MSG = "Error while processing time input.";
+let http = require('http');
+let url = require('url');
+let moment = require('moment');
 
+// process the string input and returns the output json
 function processTimeInput(timeInput) {
-	let moment = require('moment');
-
 	// try timestamp then natural
 	let inputDate = moment.utc(timeInput, _TIMESTAMP_FORMAT, true);
 	if (!inputDate.isValid()) {
@@ -38,13 +40,11 @@ function getPath(urlStr, basePath) {
 	return urlStr.substr(startIndex);
 }
 
-if (process.argv.length > 2) {
-	let http = require('http');
-	let url = require('url');
-
+// lunch the timestamp service
+function launchServer(port, basePath) {
 	let server = http.createServer(
 		function callback (request, response) {
-			let path = getPath(request.url, process.argv[3]);
+			let path = getPath(request.url, basePath);
 			let result = processTimeInput(path);
 
 			if (result) {
@@ -58,5 +58,15 @@ if (process.argv.length > 2) {
 			response.end();
 		}
 	);
-	server.listen(process.argv[2]);
+	server.listen(port);
+
+	return server;
+}
+
+// handle imports
+exports.launchServer = launchServer;
+
+// handle direct calls
+if (process.argv.length > 3) {
+	launchServer(process.argv[2], process.argv[3]);
 }
