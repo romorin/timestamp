@@ -67,6 +67,6 @@ function launchServer(port, basePath) {
 exports.launchServer = launchServer;
 
 // handle direct calls
-if (process.argv.length > 3) {
+if (process.argv.length > 2) {
 	launchServer(process.argv[2], process.argv[3]);
 }
