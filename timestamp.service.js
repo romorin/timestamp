@@ -1,5 +1,6 @@
 const _TIMESTAMP_FORMAT = "X";
 const _NATURAL_FORMAT = "MMMM DD YYYY";
+const _NATURAL_OUTPUT_FORMAT = "MMMM DD, YYYY";
 const _ERROR_MSG = "Error while processing the time input.";
 
 let http = require('http');
@@ -20,7 +21,7 @@ function processTimeInput(timeInput) {
 	let outNatural = null;
 	if (inputDate.isValid()) {
 		outTimestamp = Number(inputDate.format(_TIMESTAMP_FORMAT));
-		outNatural = inputDate.format(_NATURAL_FORMAT);
+		outNatural = inputDate.format(_NATURAL_OUTPUT_FORMAT);
 	}
 
 	// generate json
