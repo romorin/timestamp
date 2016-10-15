@@ -3,6 +3,7 @@ const _NATURAL_FORMAT = "MMMM DD YYYY";
 const _NATURAL_OUTPUT_FORMAT = "MMMM DD, YYYY";
 const _ERROR_MSG = "Error while processing the time input.";
 
+let fs = require('fs');
 let http = require('http');
 let url = require('url');
 let moment = require('moment');
@@ -46,17 +47,26 @@ function launchServer(port, basePath) {
 	let server = http.createServer(
 		function callback (request, response) {
 			let path = getPath(request.url, basePath);
-			let result = processTimeInput(path);
 
-			if (result) {
-				response.writeHead(200, { 'Content-Type': 'application/json' });
-				response.write(JSON.stringify(result));
+			// display a help message
+			if (path === '') {
+				response.writeHead(200, { 'Content-Type': 'text/html' });
+				fileStream = fs.createReadStream('hello.html');
+				fileStream.pipe(response);
 			}
 			else {
-				response.writeHead(400, { 'Content-Type': 'text/plain' });
-				response.write(_ERROR_MSG);
+				let result = processTimeInput(path);
+
+				if (result) {
+					response.writeHead(200, { 'Content-Type': 'application/json' });
+					response.write(JSON.stringify(result));
+				}
+				else {
+					response.writeHead(400, { 'Content-Type': 'text/plain' });
+					response.write(_ERROR_MSG);
+				}
+				response.end();
 			}
-			response.end();
 		}
 	);
 	server.listen(port);

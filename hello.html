@@ -1,0 +1,29 @@
+<header>
+	Pass a natural date (January 1, 2016) or a timestamp (1450137600)
+	as a parameter and returns json containing both.
+	If no valid input, returns json containing null to both fields.
+</header>
+<br/>
+<h3>Examples :</h3>
+<br/>
+<section>
+	<p>
+		https://romorin-timestamp.herokuapp.com/September%2009%202001
+		https://romorin-timestamp.herokuapp.com/999993600
+	</p>
+	<p>Returns :</p>
+	<p>
+		{"unix":999993600,"natural":"September 09, 2001"}
+	</p>
+</section>
+<br/>
+<section>
+	<p>
+		https://romorin-timestamp.herokuapp.com/Hello
+		https://romorin-timestamp.herokuapp.com/
+	</p>
+	<p>Returns :</p>
+	<p>
+		{"unix":null,"natural":null}
+	</p>
+</section>
