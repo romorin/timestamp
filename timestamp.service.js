@@ -7,6 +7,7 @@ let fs = require('fs');
 let http = require('http');
 let url = require('url');
 let moment = require('moment');
+let ReplaceTransform = require('./replace-transform');
 
 // process the string input and returns the output json
 function processTimeInput(timeInput) {
@@ -42,17 +43,27 @@ function getPath(urlStr, basePath) {
 	return urlStr.substr(startIndex);
 }
 
+// get the address where the server sits
+function getAddr(request, basePath) {
+	let addr = request.headers.host;
+	if (basePath) {
+		addr += basePath;
+	}
+	return addr;
+}
+
 // lunch the timestamp service
 function launchServer(port, basePath) {
 	let server = http.createServer(
 		function callback (request, response) {
 			let path = getPath(request.url, basePath);
+			let transformer = new ReplaceTransform(/%%URL%%/g, getAddr(request, basePath));
 
 			// display a help message
 			if (path === '') {
 				response.writeHead(200, { 'Content-Type': 'text/html' });
 				fileStream = fs.createReadStream('hello.html');
-				fileStream.pipe(response);
+				fileStream.pipe(transformer).pipe(response);
 			}
 			else {
 				let result = processTimeInput(path);
