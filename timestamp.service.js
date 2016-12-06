@@ -3,11 +3,12 @@ const _NATURAL_FORMAT = "MMMM DD YYYY";
 const _NATURAL_OUTPUT_FORMAT = "MMMM DD, YYYY";
 const _ERROR_MSG = "Error while processing the time input.";
 
-let fs = require('fs');
-let http = require('http');
-let url = require('url');
-let moment = require('moment');
-let ReplaceTransform = require('./replace-transform');
+const fs = require('fs');
+const http = require('http');
+const url = require('url');
+const moment = require('moment');
+const ReplaceTransform = require('./replace-transform');
+const nodepath = require('path');
 
 // process the string input and returns the output json
 function processTimeInput(timeInput) {
@@ -62,7 +63,7 @@ function launchServer(port, basePath) {
 			// display a help message
 			if (path === '') {
 				response.writeHead(200, { 'Content-Type': 'text/html' });
-				fileStream = fs.createReadStream('hello.html');
+				fileStream = fs.createReadStream(nodepath.join(__dirname,'hello.html'));
 				fileStream.pipe(transformer).pipe(response);
 			}
 			else {
@@ -89,6 +90,6 @@ function launchServer(port, basePath) {
 exports.launchServer = launchServer;
 
 // handle direct calls
-if (process.argv.length > 2) {
+if (require.main === module && process.argv.length > 2) {
 	launchServer(process.argv[2], process.argv[3]);
 }
